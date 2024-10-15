@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "@/app/globals.css";
 
 import { RecoilProvider } from "@/context/RecoilProvider";
+import ReactQueryProviders from "@/context/ReactQueryProvider";
 
 const geistSans = localFont({
   src: "../../public/fonts/GeistVF.woff",
@@ -30,7 +31,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <RecoilProvider>{children}</RecoilProvider>
+        <ReactQueryProviders>
+          <RecoilProvider>{children}</RecoilProvider>
+        </ReactQueryProviders>
       </body>
     </html>
   );
