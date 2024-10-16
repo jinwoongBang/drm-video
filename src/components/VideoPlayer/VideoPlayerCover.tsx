@@ -35,6 +35,11 @@ function VideoPlayerCover() {
           {episodeIndex}/{data?.seasons[0].episodeCount}
         </div>
       </header>
+      <div className="flex justify-center items-center">
+        <span className="rounded-full p-6 inline-flex bg-black/30">
+          <PlayIcon className="h-20 w-20 text-white drop-shadow-lx ml-3" />
+        </span>
+      </div>
       <aside className="absolute right-[10px] bottom-[72px] w-[42px] h-[296px] flex flex-col place-items-center justify-between z-[1100]">
         <IconButton Icon={HeartIcon} text={data?.likeCount?.toString()} />
         <IconButton Icon={BookmarkIcon} text="찜" />
