@@ -9,16 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.59.15",
+    "axios": "^1.7.7",
     "dash.js": "^4.0.0",
     "hls.js": "^1.5.16",
     "next": "14.2.15",
     "react": "^18",
     "react-dom": "^18",
-    "react-query": "^3.39.3",
     "recoil": "^0.7.7",
     "swiper": "^11.1.14"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "^5.59.15",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
