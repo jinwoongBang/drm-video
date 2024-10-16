@@ -17,7 +17,7 @@ async function Page({ params }: { params: { programId: string } }) {
 
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ["videos", programId],
+    queryKey: ["program", programId],
     queryFn: () => getProgram(programId),
   });
 
