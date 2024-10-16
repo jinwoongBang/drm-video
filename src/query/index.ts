@@ -10,6 +10,5 @@ export const getProgram = async (programId: string) => {
   return data.payload;
 };
 
-// cache() is scoped per request, so we don't leak data between requests
 const getQueryClient = cache(() => new QueryClient());
 export default getQueryClient;
