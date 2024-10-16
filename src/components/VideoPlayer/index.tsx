@@ -1,18 +1,28 @@
-import { VideoData } from "@/components/shorts/ShortsSwiper";
+import VideoPlayerCover from "@/components/VideoPlayer/VideoPlayerCover";
+import CoreVideoPlayer from "@/components/VideoPlayer/CoreVideoPlayer";
+import { VideoData } from "../shorts/ShortsSwiper";
+import { useSwiperSlide } from "swiper/react";
+import { useEffect } from "react";
 
-function VideoPlayer({ video }: { video: VideoData }) {
+interface VideoPlayerProps {
+  video: VideoData;
+}
+
+function VideoPlayer({ video }: VideoPlayerProps) {
+  const swiperSlide = useSwiperSlide();
+
+  useEffect(() => {
+    console.log("swiperSlide", swiperSlide);
+    return () => {
+      console.log("swiperSlide", swiperSlide);
+    };
+  }, [swiperSlide]);
+
   return (
-    <section className="relative flex justify-center align-middle w-screen h-screen">
-      <video
-        src={video.videoUrl}
-        className="max-w-[572px] w-full"
-        //   controls
-        loop
-        playsInline
-        autoPlay={true}
-        muted={true}
-      />
-    </section>
+    <>
+      <CoreVideoPlayer video={video} isActive={swiperSlide.isActive} />
+      <VideoPlayerCover />
+    </>
   );
 }
 

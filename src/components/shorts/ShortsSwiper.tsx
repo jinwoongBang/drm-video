@@ -8,7 +8,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation, Pagination, Virtual } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -16,6 +16,8 @@ import "swiper/css/pagination";
 import VideoPlayer from "@/components/VideoPlayer";
 import VideoPlayerCover from "@/components/VideoPlayer/VideoPlayerCover";
 import {
+  isShowVideoCoverState,
+  isVideoPlayingState,
   selectedEpisodeIndexState,
   selectedProgramIdState,
 } from "@/store/video";
@@ -33,12 +35,16 @@ interface ShortsSwiperProps {
 const ShortsSwiper: React.FC<ShortsSwiperProps> = ({ videos, programId }) => {
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-
   const setSelectedProgramId = useSetRecoilState(selectedProgramIdState);
   const [selectedEpisodeIndex, setSelectedEpisodeIndex] = useRecoilState(
     selectedEpisodeIndexState
   );
+
+  const [isShowVideoCover, setIsShowVideoCover] = useRecoilState(
+    isShowVideoCoverState
+  );
+  const [isVideoPlaying, setIsVideoPlaying] =
+    useRecoilState(isVideoPlayingState);
 
   useEffect(() => {
     setSelectedProgramId(programId);
@@ -62,14 +68,21 @@ const ShortsSwiper: React.FC<ShortsSwiperProps> = ({ videos, programId }) => {
       initialSlide={selectedEpisodeIndex >= 0 ? selectedEpisodeIndex : 0}
       //   navigation
       //   pagination={{ clickable: true }}
-      //   modules={[Navigation, Pagination]}
+      modules={[Virtual]}
       onSlideChange={handleSlideChange}
       className="h-full"
+      virtual
+      onClick={(event) => {
+        setIsShowVideoCover((state: boolean) => !state);
+      }}
+      onDoubleClick={(event) => {
+        setIsShowVideoCover(true);
+        setIsVideoPlaying((state) => !state);
+      }}
     >
       {videos.map((video, index) => (
         <SwiperSlide key={video.id} virtualIndex={index}>
           <VideoPlayer video={video} />
-          <VideoPlayerCover />
         </SwiperSlide>
       ))}
     </Swiper>
