@@ -11,3 +11,17 @@ export interface Program {
     hasTrailer: boolean;
   }[];
 }
+export interface VideoList {
+  programId: number;
+  videos: {
+    seasonId: number;
+    episodeNumber: number;
+    format: "HLS" | "DASH";
+  }[];
+}
+export interface VideoPlayInfo {
+  seasonId: number;
+  episodeNumber: number;
+  url: string;
+  format: "HLS" | "DASH";
+}
