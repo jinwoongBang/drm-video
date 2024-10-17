@@ -15,30 +15,29 @@ import "swiper/css/pagination";
 
 import VideoPlayer from "@/components/VideoPlayer";
 import VideoPlayerCover from "@/components/VideoPlayer/VideoPlayerCover";
+import { isShowVideoCoverState, isVideoPlayingState } from "@/store/video";
 import {
-  isShowVideoCoverState,
-  isVideoPlayingState,
-  selectedEpisodeIndexState,
   selectedProgramIdState,
-} from "@/store/video";
+  selectedProgramInfoState,
+} from "@/store/program";
+import { useVideoListQuery } from "@/hooks/useVideoQuery";
 
 export interface VideoData {
   id: string;
-  videoUrl: string;
+  programId: number;
+  seasonId: number;
+  episodeNumber: number;
 }
 
 interface ShortsSwiperProps {
-  videos: VideoData[];
-  programId: string;
+  programId: number;
 }
 
-const ShortsSwiper: React.FC<ShortsSwiperProps> = ({ videos, programId }) => {
+const ShortsSwiper: React.FC<ShortsSwiperProps> = ({ programId }) => {
   const router = useRouter();
 
-  const setSelectedProgramId = useSetRecoilState(selectedProgramIdState);
-  const [selectedEpisodeIndex, setSelectedEpisodeIndex] = useRecoilState(
-    selectedEpisodeIndexState
-  );
+  const [{ episodeIndex, seasonIndex }, setSelectedProgramInfo] =
+    useRecoilState(selectedProgramInfoState);
 
   const [isShowVideoCover, setIsShowVideoCover] = useRecoilState(
     isShowVideoCoverState
@@ -46,18 +45,20 @@ const ShortsSwiper: React.FC<ShortsSwiperProps> = ({ videos, programId }) => {
   const [isVideoPlaying, setIsVideoPlaying] =
     useRecoilState(isVideoPlayingState);
 
-  useEffect(() => {
-    setSelectedProgramId(programId);
-  }, [programId]);
+  const { data: videoList } = useVideoListQuery(programId);
 
   useEffect(() => {
-    router.push(`/video/${programId}?episodeId=${selectedEpisodeIndex}`, {
+    router.push(`/video/${programId}?episodeId=${episodeIndex}`, {
       scroll: false,
     });
-  }, [selectedEpisodeIndex]);
+  }, [programId, episodeIndex]);
 
   const handleSlideChange = (swiper: SwiperClass) => {
-    setSelectedEpisodeIndex(swiper.activeIndex);
+    setIsShowVideoCover(true);
+    setSelectedProgramInfo((state) => ({
+      ...state,
+      episodeIndex: swiper.activeIndex,
+    }));
   };
 
   return (
@@ -65,7 +66,7 @@ const ShortsSwiper: React.FC<ShortsSwiperProps> = ({ videos, programId }) => {
       direction="vertical"
       slidesPerView={1}
       spaceBetween={0}
-      initialSlide={selectedEpisodeIndex >= 0 ? selectedEpisodeIndex : 0}
+      initialSlide={episodeIndex >= 0 ? episodeIndex : 0}
       //   navigation
       //   pagination={{ clickable: true }}
       modules={[Virtual]}
@@ -80,11 +81,17 @@ const ShortsSwiper: React.FC<ShortsSwiperProps> = ({ videos, programId }) => {
         setIsVideoPlaying((state) => !state);
       }}
     >
-      {videos.map((video, index) => (
-        <SwiperSlide key={video.id} virtualIndex={index}>
-          <VideoPlayer video={video} />
-        </SwiperSlide>
-      ))}
+      {videoList?.videos
+        .filter((video) => video.format === "HLS")
+        .map((video, index) => (
+          <SwiperSlide key={video.episodeNumber} virtualIndex={index}>
+            <VideoPlayer
+              programId={programId}
+              seasonId={video.seasonId}
+              episodeNumber={video.episodeNumber}
+            />
+          </SwiperSlide>
+        ))}
     </Swiper>
   );
 };

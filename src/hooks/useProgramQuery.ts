@@ -1,7 +1,9 @@
 import { useCommonQuery } from "@/hooks/useCommonQuery";
+import { selectedProgramIdState } from "@/store/program";
 import { Program } from "@/types/response";
+import { useRecoilValue } from "recoil";
 
-export function useProgramQuery(programId: string) {
+export function useProgramQuery(programId: number) {
   return useCommonQuery<Program>(
     ["program", programId],
     {

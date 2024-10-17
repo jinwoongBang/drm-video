@@ -1,15 +1,24 @@
 import VideoPlayerCover from "@/components/VideoPlayer/VideoPlayerCover";
 import CoreVideoPlayer from "@/components/VideoPlayer/CoreVideoPlayer";
-import { VideoData } from "../shorts/ShortsSwiper";
+
 import { useSwiperSlide } from "swiper/react";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
+import { useVideoQuery } from "@/hooks/useVideoQuery";
 
 interface VideoPlayerProps {
-  video: VideoData;
+  programId: number;
+  seasonId: number;
+  episodeNumber: number;
 }
 
-function VideoPlayer({ video }: VideoPlayerProps) {
+function VideoPlayer({ programId, seasonId, episodeNumber }: VideoPlayerProps) {
   const swiperSlide = useSwiperSlide();
+
+  const { data: videoInfo, isLoading } = useVideoQuery(
+    seasonId,
+    episodeNumber,
+    "HLS"
+  );
 
   useEffect(() => {
     console.log("swiperSlide", swiperSlide);
@@ -18,9 +27,15 @@ function VideoPlayer({ video }: VideoPlayerProps) {
     };
   }, [swiperSlide]);
 
+  useEffect(() => {
+    console.log("videoInfo", videoInfo);
+  }, [videoInfo]);
+
+  if (isLoading) return <div>로딩중...</div>;
+
   return (
     <>
-      <CoreVideoPlayer video={video} isActive={swiperSlide.isActive} />
+      <CoreVideoPlayer videoInfo={videoInfo} isActive={swiperSlide.isActive} />
       <VideoPlayerCover />
     </>
   );

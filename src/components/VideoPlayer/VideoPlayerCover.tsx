@@ -12,24 +12,25 @@ import {
   PauseIcon,
 } from "@heroicons/react/16/solid";
 
-import {
-  isShowVideoCoverState,
-  isVideoPlayingState,
-  selectedEpisodeIndexState,
-  selectedProgramIdState,
-} from "@/store/video";
+import { isShowVideoCoverState, isVideoPlayingState } from "@/store/video";
 import IconButton from "@/components/button";
 import { useProgramQuery } from "@/hooks/useProgramQuery";
 import clsx from "clsx";
 import { useEffect, useRef } from "react";
+import {
+  selectedProgramIdState,
+  selectedProgramInfoState,
+} from "@/store/program";
 
 function VideoPlayerCover() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-
   const programId = useRecoilValue(selectedProgramIdState);
   const { data } = useProgramQuery(programId);
 
-  const episodeIndex = useRecoilValue(selectedEpisodeIndexState);
+  const { episodeIndex, seasonIndex } = useRecoilValue(
+    selectedProgramInfoState
+  );
+
   const [isShowVideoCover, setIsShowVideoCover] = useRecoilState(
     isShowVideoCoverState
   );
@@ -37,7 +38,6 @@ function VideoPlayerCover() {
     useRecoilState(isVideoPlayingState);
 
   useEffect(() => {
-    console.log("isShowVideoCover", isShowVideoCover);
     if (isShowVideoCover) {
       timerRef.current = setTimeout(() => {
         setIsShowVideoCover(false);
@@ -74,7 +74,7 @@ function VideoPlayerCover() {
           <span>{data?.title}</span>
         </div>
         <div>
-          {episodeIndex}/{data?.seasons[0].episodeCount}
+          {episodeIndex}/{data?.seasons[seasonIndex].episodeCount}
         </div>
       </header>
       <div className="flex justify-center items-center">
