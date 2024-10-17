@@ -7,8 +7,9 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const format = searchParams.get("format");
   const episodeNumber = searchParams.get("episodeNumber");
+  const seasonId = searchParams.get("seasonId");
 
-  if (!format || !episodeNumber) {
+  if (!format || !episodeNumber || !seasonId) {
     return NextResponse.json(
       { error: "Missing required parameters" },
       { status: 400 }
@@ -19,12 +20,14 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Invalid format" }, { status: 400 });
   }
 
-  const fileName = `${format}-1500001-${episodeNumber}.json`;
+  const fileName = `${format}-${seasonId}-${episodeNumber}.json`;
   const filePath = path.join(process.cwd(), "src", "mock", "play", fileName);
 
   try {
     const fileContents = fs.readFileSync(filePath, "utf8");
     const jsonData = JSON.parse(fileContents);
+    jsonData.payload.format = format;
+
     return NextResponse.json(jsonData);
   } catch (error) {
     console.error("Error reading file:", error);
