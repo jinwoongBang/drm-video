@@ -1,13 +1,15 @@
 "use client";
 
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+
 import { useProgramQuery } from "@/hooks/useProgramQuery";
 import { useVideoListQuery } from "@/hooks/useVideoQuery";
+
 import {
   selectedProgramIdState,
   selectedProgramInfoState,
 } from "@/store/program";
-import { useEffect } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface ProgramInfoProviderProps {
   programId: number;

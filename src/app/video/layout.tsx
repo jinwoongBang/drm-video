@@ -1,4 +1,4 @@
-import getQueryClient, { getProgram } from "@/query";
+import getQueryClient from "@/query";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
