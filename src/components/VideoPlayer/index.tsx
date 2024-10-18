@@ -1,9 +1,11 @@
+import { useSwiperSlide } from "swiper/react";
+
 import VideoPlayerCover from "@/components/VideoPlayer/VideoPlayerCover";
 import CoreVideoPlayer from "@/components/VideoPlayer/CoreVideoPlayer";
 
-import { useSwiperSlide } from "swiper/react";
-import { use, useEffect } from "react";
+
 import { useVideoQuery } from "@/hooks/useVideoQuery";
+import Loading from "@/components/loading/Loading";
 
 interface VideoPlayerProps {
   programId: number;
@@ -20,18 +22,7 @@ function VideoPlayer({ programId, seasonId, episodeNumber }: VideoPlayerProps) {
     "HLS"
   );
 
-  useEffect(() => {
-    console.log("swiperSlide", swiperSlide);
-    return () => {
-      console.log("swiperSlide", swiperSlide);
-    };
-  }, [swiperSlide]);
-
-  useEffect(() => {
-    console.log("videoInfo", videoInfo);
-  }, [videoInfo]);
-
-  if (isLoading) return <div>로딩중...</div>;
+  if (isLoading) return <Loading />;
 
   return (
     <>
