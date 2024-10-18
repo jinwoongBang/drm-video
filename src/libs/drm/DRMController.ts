@@ -53,7 +53,6 @@ class DRMController implements DRMControllerInterface {
   supportSl3000: boolean = false;
 
   constructor({ licenseUri }: { licenseUri: string }) {
-    console.log("DRMController :: constructor()", { licenseUri });
     this.licenseUri = licenseUri;
   }
 

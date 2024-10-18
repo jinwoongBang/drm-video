@@ -47,7 +47,6 @@ class FairPlayDRM implements DRM {
   };
 
   constructor({ licenseUri }: { licenseUri: string }) {
-    console.log("FairPlayDRM :: constructor()");
     this.licenseUri = licenseUri;
   }
 

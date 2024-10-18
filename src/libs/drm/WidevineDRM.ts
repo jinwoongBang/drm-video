@@ -40,7 +40,6 @@ class WidevineDRM implements DRM {
   };
 
   constructor({ licenseUri }: { licenseUri: string }) {
-    console.log("WidevineDRM :: constructor()", { licenseUri });
     this.licenseUri = licenseUri;
   }
 

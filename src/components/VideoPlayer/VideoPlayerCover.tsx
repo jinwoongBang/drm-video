@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+
+import clsx from "clsx";
 
 import {
   HeartIcon,
@@ -12,15 +15,15 @@ import {
   PauseIcon,
 } from "@heroicons/react/16/solid";
 
-import { isShowVideoCoverState, isVideoPlayingState } from "@/store/video";
-import IconButton from "@/components/button";
 import { useProgramQuery } from "@/hooks/useProgramQuery";
-import clsx from "clsx";
-import { useEffect, useRef } from "react";
+
+import { isShowVideoCoverState, isVideoPlayingState } from "@/store/video";
 import {
   selectedProgramIdState,
   selectedProgramInfoState,
 } from "@/store/program";
+
+import IconButton from "@/components/button";
 
 function VideoPlayerCover() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);

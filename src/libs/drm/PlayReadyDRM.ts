@@ -34,7 +34,6 @@ class PlayReadyDRM implements DRM {
   };
 
   constructor({ licenseUri }: { licenseUri: string }) {
-    console.log("PlayReadyDRM :: constructor()");
     this.licenseUri = licenseUri;
   }
 

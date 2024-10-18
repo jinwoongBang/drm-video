@@ -7,6 +7,8 @@ interface FetcherParams {
   params?: object;
 }
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export function useCommonQuery<TData = unknown>(
   key: QueryKey,
   { url, params }: FetcherParams,
@@ -16,6 +18,7 @@ export function useCommonQuery<TData = unknown>(
     queryKey: key,
     queryFn: async () => {
       const response = await requestGet<TData>(url, params);
+      // await delay(3000);
       return response.payload;
     },
     ...options,

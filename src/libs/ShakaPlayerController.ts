@@ -14,7 +14,6 @@ export class ShakaPlayerController {
   private drmController: DRMController | null = null;
 
   constructor() {
-    console.log("ShakaPlayerController :: constructor()");
     this.drmController = new DRMController({ licenseUri: this.licenseUri });
   }
 
