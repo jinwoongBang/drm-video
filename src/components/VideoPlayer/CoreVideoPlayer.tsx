@@ -29,7 +29,10 @@ function VideoPlayer({ videoInfo, isActive }: VideoPlayerProps) {
           setIsInit(true);
         })
         .then(() => {
-          shakaPlayerControllerRef.current.loadVideo(videoInfo?.url as string);
+          shakaPlayerControllerRef.current.loadVideo({
+            hls: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+            dash: "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd",
+          });
         });
     } else {
       shakaPlayerControllerRef.current.detach();

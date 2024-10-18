@@ -1,18 +1,29 @@
 // @ts-ignore
-import shaka from "shaka-player";
+// import shaka from "shaka-player";
+// https://cdn.jsdelivr.net/npm/shaka-player@4.6.2/dist/shaka-player.compiled.min.js
+
+import DRMController from "@/libs/drm/DRMController";
 
 export class ShakaPlayerController {
-  private player: spoonShaka.Player | null = null;
+  private player: shaka.Player | null = null;
   private video: HTMLVideoElement | null = null;
+
+  private licenseUri: string =
+    "https://license-global.pallycon.com/ri/licenseManager.do";
+
+  private drmController: DRMController | null = null;
 
   constructor() {
     console.log("ShakaPlayerController :: constructor()");
+    this.drmController = new DRMController({ licenseUri: this.licenseUri });
   }
 
   public async initApp(videoElement: HTMLVideoElement): Promise<void> {
+    await this.loadShakaPlayerScript();
     shaka.polyfill.installAll();
 
     if (shaka.Player.isBrowserSupported()) {
+      await this.drmController?.init();
       this.video = videoElement;
       await this.initPlayer();
     } else {
@@ -22,23 +33,28 @@ export class ShakaPlayerController {
 
   private async initPlayer(): Promise<void> {
     this.player = new shaka.Player(this.video as HTMLMediaElement);
-    if (this.player) {
-      await this.player.attach(this.video as HTMLMediaElement);
 
-      // Listen for error events.
+    if (this.player) {
       this.player.addEventListener("error", this.onErrorEvent);
+      this.drmController?.drm?.registerFilter(this.player);
+      this.player.configure(this.drmController?.drm?.config as object);
     }
   }
 
-  public async loadVideo(manifestUri: string): Promise<void> {
+  public async loadVideo(manifestUri: {
+    hls: string;
+    dash: string;
+  }): Promise<void> {
+    console.log("ShakaPlayerController :: loadVideo()");
     if (!this.player) {
       console.error("Player not initialized");
       return;
     }
 
     try {
-      await this.player.load(manifestUri);
-      console.log("The video has now been loaded!");
+      const streamingType = this.drmController?.streamingType || "dash";
+      const uri = manifestUri[streamingType];
+      await this.player.load(uri);
     } catch (e) {
       this.onError(e);
     }
@@ -57,5 +73,18 @@ export class ShakaPlayerController {
 
   private onError(error: any): void {
     console.error("Error code", error.code, "object", error);
+  }
+
+  private async loadShakaPlayerScript(): Promise<void> {
+    if (typeof shaka === "undefined") {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src =
+          "https://cdn.jsdelivr.net/npm/shaka-player@4.6.2/dist/shaka-player.compiled.min.js";
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error("Failed to load Shaka Player"));
+        document.head.appendChild(script);
+      });
+    }
   }
 }
