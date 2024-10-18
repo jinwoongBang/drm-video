@@ -2,6 +2,6 @@
   "payload": {
     "seasonId": 15000001,
     "episodeNumber": 1,
-    "url": "https://contents.pallycon.com/bunny/hls/master.m3u8"
+    "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
   }
 }

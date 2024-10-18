@@ -2,6 +2,6 @@
   "payload": {
     "seasonId": 15000001,
     "episodeNumber": 2,
-    "url": "https://contents.pallycon.com/bunny/stream.mpd"
+    "url": "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd"
   }
 }
