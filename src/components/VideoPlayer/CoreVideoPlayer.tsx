@@ -2,7 +2,12 @@
 
 import { VideoData } from "@/components/shorts/ShortsSwiper";
 import { ShakaPlayerController } from "@/libs/ShakaPlayerController";
-import { isVideoPlayingState } from "@/store/video";
+import {
+  isVideoLoadingState,
+  isVideoPlayingState,
+  videoCurrentTimeState,
+  videoDurationState,
+} from "@/store/video";
 import { VideoPlayInfo } from "@/types/response";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -20,6 +25,15 @@ function VideoPlayer({ videoInfo, isActive }: VideoPlayerProps) {
 
   const [isVideoPlaying, setIsVideoPlaying] =
     useRecoilState(isVideoPlayingState);
+
+  const [isVideoLoading, setIsVideoLoading] =
+    useRecoilState(isVideoLoadingState);
+
+  const [videoCurrentTime, setVideoCurrentTime] = useRecoilState(
+    videoCurrentTimeState
+  );
+
+  const [videoDuration, setVideoDuration] = useRecoilState(videoDurationState);
 
   useEffect(() => {
     if (isActive) {
@@ -43,6 +57,38 @@ function VideoPlayer({ videoInfo, isActive }: VideoPlayerProps) {
     };
   }, [videoInfo, isActive]);
 
+  const handleLoadStart = () => {
+    console.debug("onLoadStart");
+  };
+
+  const handleLoadedMetadata = () => {
+    console.debug("onLoadedMetadata");
+  };
+
+  const handleLoadedData = () => {
+    console.debug("onLoadedData");
+  };
+
+  const handleWaiting = () => {
+    console.debug("onWaiting");
+    setIsVideoLoading(true);
+  };
+
+  const handleCanPlay = () => {
+    console.debug("onCanPlay");
+    setIsVideoLoading(false);
+  };
+
+  const handleTimeUpdate = () => {
+    console.debug("onTimeUpdate");
+    setVideoCurrentTime(videoRef.current?.currentTime || 0);
+  };
+
+  const handleDurationChange = () => {
+    console.debug("onDurationChange");
+    setVideoDuration(videoRef.current?.duration || 0);
+  };
+
   return (
     <section className="relative flex justify-center align-middle w-screen h-screen">
       {isActive && (
@@ -58,6 +104,13 @@ function VideoPlayer({ videoInfo, isActive }: VideoPlayerProps) {
           playsInline
           autoPlay={true}
           muted={true}
+          onLoadStart={handleLoadStart}
+          onLoadedMetadata={handleLoadedMetadata}
+          onLoadedData={handleLoadedData}
+          onWaiting={handleWaiting}
+          onCanPlay={handleCanPlay}
+          onTimeUpdate={handleTimeUpdate}
+          onDurationChange={handleDurationChange}
         />
       )}
     </section>

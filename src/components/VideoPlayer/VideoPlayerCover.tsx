@@ -21,6 +21,9 @@ import {
   isShowVideoCoverState,
   isVideoLoadingState,
   isVideoPlayingState,
+  videoCurrentTimeState,
+  videoDurationState,
+  videoProgressSelector,
 } from "@/store/video";
 import {
   selectedProgramIdState,
@@ -47,6 +50,11 @@ function VideoPlayerCover() {
 
   const isVideoLoading = useRecoilValue(isVideoLoadingState);
 
+  const videoProgress = useRecoilValue(videoProgressSelector);
+
+  const videoCurrentTime = useRecoilValue(videoCurrentTimeState);
+  const videoDuration = useRecoilValue(videoDurationState);
+
   useEffect(() => {
     if (isShowVideoCover) {
       timerRef.current = setTimeout(() => {
@@ -60,16 +68,6 @@ function VideoPlayerCover() {
       timerRef.current && clearTimeout(timerRef.current);
     };
   }, [isShowVideoCover]);
-
-  const handlePlay = () => {
-    console.log("play");
-  };
-
-  const handlePause = () => {
-    console.log("pause");
-  };
-
-  const togglePlay = () => {};
 
   return (
     <>
@@ -111,13 +109,15 @@ function VideoPlayerCover() {
               <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                 <div
                   className="bg-blue-600 h-2.5 rounded-full"
-                  style={{ width: "45%" }}
+                  style={{ width: `${videoProgress}%` }}
                 ></div>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <IconButton Icon={PlayIcon} />
-              <span className="ml-2 text-sm text-gray-300">00:00 / 10:30</span>
+              <span className="ml-2 text-sm text-gray-300">
+                {videoCurrentTime} / {videoDuration}
+              </span>
             </div>
           </section>
         </section>
