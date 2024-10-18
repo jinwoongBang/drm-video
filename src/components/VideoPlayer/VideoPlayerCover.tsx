@@ -17,13 +17,18 @@ import {
 
 import { useProgramQuery } from "@/hooks/useProgramQuery";
 
-import { isShowVideoCoverState, isVideoPlayingState } from "@/store/video";
+import {
+  isShowVideoCoverState,
+  isVideoLoadingState,
+  isVideoPlayingState,
+} from "@/store/video";
 import {
   selectedProgramIdState,
   selectedProgramInfoState,
 } from "@/store/program";
 
 import IconButton from "@/components/button";
+import Loading from "../loading/Loading";
 
 function VideoPlayerCover() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -39,6 +44,8 @@ function VideoPlayerCover() {
   );
   const [isVideoPlaying, setIsVideoPlaying] =
     useRecoilState(isVideoPlayingState);
+
+  const isVideoLoading = useRecoilValue(isVideoLoadingState);
 
   useEffect(() => {
     if (isShowVideoCover) {
@@ -65,51 +72,57 @@ function VideoPlayerCover() {
   const togglePlay = () => {};
 
   return (
-    <section
-      className={clsx(
-        "absolute top-0 left-0 p-4 flex flex-col justify-between w-full h-full",
-        isShowVideoCover ? "block" : "hidden"
-      )}
-    >
-      <header className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <IconButton Icon={ArrowLeftIcon} />
-          <span>{data?.title}</span>
-        </div>
-        <div>
-          {episodeIndex}/{data?.seasons[seasonIndex].episodeCount}
-        </div>
-      </header>
-      <div className="flex justify-center items-center">
-        <span className="rounded-full p-6 inline-flex bg-black/30">
-          {isVideoPlaying ? (
-            <PlayIcon className="h-20 w-20 text-white drop-shadow-lx ml-3" />
-          ) : (
-            <PauseIcon className="h-20 w-20 text-white drop-shadow-lx" />
+    <>
+      {isVideoLoading ? (
+        <Loading />
+      ) : (
+        <section
+          className={clsx(
+            "absolute top-0 left-0 p-4 flex flex-col justify-between w-full h-full",
+            isShowVideoCover ? "block" : "hidden"
           )}
-        </span>
-      </div>
-      <aside className="absolute right-[10px] bottom-[72px] w-[42px] h-[296px] flex flex-col place-items-center justify-between z-[1100]">
-        <IconButton Icon={HeartIcon} text={data?.likeCount?.toString()} />
-        <IconButton Icon={BookmarkIcon} text="찜" />
-        <IconButton Icon={ListBulletIcon} text="목록" />
-        <IconButton Icon={ShareIcon} text="공유" />
-      </aside>
-      <section className="flex flex-col gap-3">
-        <div>
-          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-            <div
-              className="bg-blue-600 h-2.5 rounded-full"
-              style={{ width: "45%" }}
-            ></div>
+        >
+          <header className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <IconButton Icon={ArrowLeftIcon} />
+              <span>{data?.title}</span>
+            </div>
+            <div>
+              {episodeIndex}/{data?.seasons[seasonIndex].episodeCount}
+            </div>
+          </header>
+          <div className="flex justify-center items-center">
+            <span className="rounded-full p-6 inline-flex bg-black/30">
+              {isVideoPlaying ? (
+                <PlayIcon className="h-20 w-20 text-white drop-shadow-lx ml-3" />
+              ) : (
+                <PauseIcon className="h-20 w-20 text-white drop-shadow-lx" />
+              )}
+            </span>
           </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <IconButton Icon={PlayIcon} />
-          <span className="ml-2 text-sm text-gray-300">00:00 / 10:30</span>
-        </div>
-      </section>
-    </section>
+          <aside className="absolute right-[10px] bottom-[72px] w-[42px] h-[296px] flex flex-col place-items-center justify-between z-[1100]">
+            <IconButton Icon={HeartIcon} text={data?.likeCount?.toString()} />
+            <IconButton Icon={BookmarkIcon} text="찜" />
+            <IconButton Icon={ListBulletIcon} text="목록" />
+            <IconButton Icon={ShareIcon} text="공유" />
+          </aside>
+          <section className="flex flex-col gap-3">
+            <div>
+              <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                <div
+                  className="bg-blue-600 h-2.5 rounded-full"
+                  style={{ width: "45%" }}
+                ></div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <IconButton Icon={PlayIcon} />
+              <span className="ml-2 text-sm text-gray-300">00:00 / 10:30</span>
+            </div>
+          </section>
+        </section>
+      )}
+    </>
   );
 }
 
