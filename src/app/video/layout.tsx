@@ -16,7 +16,7 @@ export default async function VideoLayout({
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <main>{children}</main>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </HydrationBoundary>
   );
 }

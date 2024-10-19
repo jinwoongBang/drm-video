@@ -40,7 +40,7 @@ import { parseNumberWithK } from "@/libs/common";
 import PlayButton from "@/components/button/play";
 import ProgressBar from "@/components/VideoPlayer/ProgressBar";
 
-function VideoPlayerCover() {
+function VideoPlayerCover({ plaerId }: { plaerId: string }) {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const programId = useRecoilValue(selectedProgramIdState);

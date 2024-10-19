@@ -1,7 +1,7 @@
 import {
   isVideoPlayingState,
   videoProgressSelector,
-  videoRefState,
+  videoElementState,
 } from "@/store/video";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -11,7 +11,7 @@ function ProgressBar({ value }: { value: number }) {
   const [isVideoPlaying, setIsVideoPlaying] =
     useRecoilState(isVideoPlayingState);
 
-  const videoRef = useRecoilValue(videoRefState);
+  const videoElement = useRecoilValue(videoElementState);
 
   useEffect(() => {
     setProgress(value);
@@ -31,11 +31,10 @@ function ProgressBar({ value }: { value: number }) {
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = Number(event.target.value);
-    setProgress(newValue);
-    if (videoRef?.current) {
-      videoRef.current.currentTime =
-        (newValue / 100) * videoRef.current.duration;
+    const value = Number(event.target.value);
+    setProgress(value);
+    if (videoElement) {
+      videoElement.currentTime = (value / 100) * videoElement.duration;
     }
   };
 

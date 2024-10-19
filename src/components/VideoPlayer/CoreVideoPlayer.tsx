@@ -7,12 +7,13 @@ import {
   isVideoPlayingState,
   videoCurrentTimeState,
   videoDurationState,
-  videoRefState,
+  videoElementState,
 } from "@/store/video";
 import { VideoPlayInfo } from "@/types/response";
 import {
   forwardRef,
   useEffect,
+  useId,
   useImperativeHandle,
   useRef,
   useState,
@@ -22,9 +23,10 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 interface VideoPlayerProps {
   videoInfo?: VideoPlayInfo | null;
   isActive: boolean;
+  plaerId: string;
 }
 
-function VideoPlayer({ videoInfo, isActive }: VideoPlayerProps) {
+function VideoPlayer({ videoInfo, isActive, plaerId }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const shakaPlayerControllerRef = useRef(new ShakaPlayerController());
 
@@ -42,15 +44,16 @@ function VideoPlayer({ videoInfo, isActive }: VideoPlayerProps) {
 
   const [videoDuration, setVideoDuration] = useRecoilState(videoDurationState);
 
-  const setVideoRef = useSetRecoilState(videoRefState);
+  const setVideoElementState = useSetRecoilState(videoElementState);
 
   useEffect(() => {
     if (isActive) {
+      console.log(`init :: ${plaerId}`);
       shakaPlayerControllerRef.current
         .initApp(videoRef.current as HTMLVideoElement)
         .then(() => {
           setIsInit(true);
-          setVideoRef(videoRef);
+          setVideoElementState(videoRef.current);
         })
         .then(() => {
           shakaPlayerControllerRef.current.loadVideo({
@@ -59,10 +62,16 @@ function VideoPlayer({ videoInfo, isActive }: VideoPlayerProps) {
           });
         });
     } else {
+      setIsInit(false);
+      setIsVideoPlaying(false);
+      setVideoCurrentTime(0);
       shakaPlayerControllerRef.current.detach();
     }
 
     return () => {
+      setIsInit(false);
+      setIsVideoPlaying(false);
+      setVideoCurrentTime(0);
       shakaPlayerControllerRef.current.detach();
     };
   }, [videoInfo, isActive]);

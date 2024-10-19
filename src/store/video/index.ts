@@ -4,8 +4,8 @@ import { formatTime } from "@/libs/common";
 import { RefObject } from "react";
 
 // 비디오 요소에 대한 참조를 저장하는 atom
-export const videoRefState = atom<RefObject<HTMLVideoElement> | null>({
-  key: "videoRefState",
+export const videoElementState = atom<HTMLVideoElement | null>({
+  key: "videoElementState",
   default: null,
 });
 

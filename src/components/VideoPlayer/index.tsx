@@ -5,6 +5,7 @@ import CoreVideoPlayer from "@/components/VideoPlayer/CoreVideoPlayer";
 
 import { useVideoQuery } from "@/hooks/useVideoQuery";
 import Loading from "@/components/loading/Loading";
+import { use, useEffect, useId } from "react";
 
 interface VideoPlayerProps {
   programId: number;
@@ -14,6 +15,8 @@ interface VideoPlayerProps {
 
 function VideoPlayer({ programId, seasonId, episodeNumber }: VideoPlayerProps) {
   const swiperSlide = useSwiperSlide();
+
+  const id = useId();
 
   const { data: videoInfo, isLoading } = useVideoQuery(
     seasonId,
@@ -25,8 +28,12 @@ function VideoPlayer({ programId, seasonId, episodeNumber }: VideoPlayerProps) {
 
   return (
     <>
-      <CoreVideoPlayer videoInfo={videoInfo} isActive={swiperSlide.isActive} />
-      <VideoPlayerCover />
+      <CoreVideoPlayer
+        plaerId={id}
+        videoInfo={videoInfo}
+        isActive={swiperSlide.isActive}
+      />
+      <VideoPlayerCover plaerId={id} />
     </>
   );
 }
