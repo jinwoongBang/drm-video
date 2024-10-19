@@ -21,6 +21,7 @@ export function useCommonQuery<TData = unknown>(
       // await delay(3000);
       return response.payload;
     },
+    throwOnError: true,
     ...options,
   });
 }
