@@ -3,7 +3,6 @@ import { useSwiperSlide } from "swiper/react";
 import VideoPlayerCover from "@/components/VideoPlayer/VideoPlayerCover";
 import CoreVideoPlayer from "@/components/VideoPlayer/CoreVideoPlayer";
 
-
 import { useVideoQuery } from "@/hooks/useVideoQuery";
 import Loading from "@/components/loading/Loading";
 

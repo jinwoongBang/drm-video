@@ -7,10 +7,17 @@ import {
   isVideoPlayingState,
   videoCurrentTimeState,
   videoDurationState,
+  videoRefState,
 } from "@/store/video";
 import { VideoPlayInfo } from "@/types/response";
-import { useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface VideoPlayerProps {
   videoInfo?: VideoPlayInfo | null;
@@ -35,12 +42,15 @@ function VideoPlayer({ videoInfo, isActive }: VideoPlayerProps) {
 
   const [videoDuration, setVideoDuration] = useRecoilState(videoDurationState);
 
+  const setVideoRef = useSetRecoilState(videoRefState);
+
   useEffect(() => {
     if (isActive) {
       shakaPlayerControllerRef.current
         .initApp(videoRef.current as HTMLVideoElement)
         .then(() => {
           setIsInit(true);
+          setVideoRef(videoRef);
         })
         .then(() => {
           shakaPlayerControllerRef.current.loadVideo({

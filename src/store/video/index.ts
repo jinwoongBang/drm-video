@@ -1,6 +1,13 @@
 import { atom, selector } from "recoil";
 
 import { formatTime } from "@/libs/common";
+import { RefObject } from "react";
+
+// 비디오 요소에 대한 참조를 저장하는 atom
+export const videoRefState = atom<RefObject<HTMLVideoElement> | null>({
+  key: "videoRefState",
+  default: null,
+});
 
 // 비디오 재생 상태 (재생 중인지 일시정지 상태인지)
 export const isVideoPlayingState = atom<boolean>({
@@ -38,7 +45,13 @@ export const videoProgressSelector = selector({
     const currentTime = get(videoCurrentTimeState);
     const duration = get(videoDurationState);
     if (duration === 0) return 0;
+
     return (currentTime / duration) * 100;
+  },
+  set: ({ set, get }, newValue) => {
+    const duration = get(videoDurationState);
+    const newTime = ((newValue as number) / 100) * duration;
+    set(videoCurrentTimeState, newTime);
   },
 });
 
