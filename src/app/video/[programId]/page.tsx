@@ -1,7 +1,7 @@
 import getQueryClient from "@/query";
 import { getProgram, getVideoList } from "@/service";
 
-import ShortsSwiper from "@/components/shorts/ShortsSwiper";
+import ShortsSwiper from "@/app/video/[programId]/component/ShortsSwiper";
 import ProgramInfoProvider from "@/app/video/[programId]/component/ProgramInfoProvider";
 
 interface VideoData {

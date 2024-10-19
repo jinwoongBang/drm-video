@@ -38,7 +38,7 @@ import { parseNumberWithK } from "@/libs/common";
 
 import IconButton from "@/components/button";
 import Loading, { LoadingSpinner } from "@/components/loading/Loading";
-import PlayButton from "@/components/button/play";
+import PlayButton from "@/components/button/Play";
 import ProgressBar from "@/components/VideoPlayer/ProgressBar";
 import { useDoubleTab } from "@/hooks/useDoubleTab";
 
