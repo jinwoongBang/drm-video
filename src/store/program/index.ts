@@ -1,11 +1,5 @@
 import { Program } from "@/types/response";
 import { atom, atomFamily, selector } from "recoil";
-import {
-  modalActionState,
-  modalContentState,
-  modalState,
-  modalTitleState,
-} from "../modal";
 
 interface SelectedProgramInfoState {
   isInit: boolean;
