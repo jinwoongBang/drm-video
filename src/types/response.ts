@@ -20,8 +20,14 @@ export interface VideoList {
   }[];
 }
 export interface VideoPlayInfo {
-  seasonId: number;
-  episodeNumber: number;
-  url: string;
-  format: "HLS" | "DASH";
+  hls: {
+    seasonId: number;
+    episodeNumber: number;
+    url: string;
+  };
+  dash: {
+    seasonId: number;
+    episodeNumber: number;
+    url: string;
+  };
 }
