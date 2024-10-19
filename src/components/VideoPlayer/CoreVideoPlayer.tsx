@@ -2,6 +2,7 @@
 
 import { VideoData } from "@/components/shorts/ShortsSwiper";
 import { ShakaPlayerController } from "@/libs/ShakaPlayerController";
+import { errorState } from "@/store/error";
 import {
   isVideoLoadingState,
   isVideoPlayingState,
@@ -45,6 +46,7 @@ function VideoPlayer({ videoInfo, isActive, plaerId }: VideoPlayerProps) {
   const [videoDuration, setVideoDuration] = useRecoilState(videoDurationState);
 
   const setVideoElementState = useSetRecoilState(videoElementState);
+  const setError = useSetRecoilState(errorState);
 
   useEffect(() => {
     if (isActive) {
@@ -54,9 +56,14 @@ function VideoPlayer({ videoInfo, isActive, plaerId }: VideoPlayerProps) {
         .then(() => {
           setIsInit(true);
           setVideoElementState(videoRef.current);
+          shakaPlayerControllerRef.current.setErrorEventHandler((error) => {
+            setError(error);
+          });
         })
         .then(() => {
           shakaPlayerControllerRef.current.loadVideo({
+            // hls: "",
+            // dash: "",
             hls: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
             dash: "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd",
           });
