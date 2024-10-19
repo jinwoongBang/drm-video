@@ -73,13 +73,6 @@ const ShortsSwiper: React.FC<ShortsSwiperProps> = ({ programId }) => {
       onSlideChange={handleSlideChange}
       className="h-full"
       virtual
-      onClick={(event) => {
-        setIsShowVideoCover((state: boolean) => !state);
-      }}
-      onDoubleClick={(event) => {
-        setIsShowVideoCover(true);
-        setIsVideoPlaying((state) => !state);
-      }}
     >
       {videoList?.videos
         .filter((video) => video.format === "HLS")

@@ -35,6 +35,7 @@ import {
 import IconButton from "@/components/button";
 import Loading from "../loading/Loading";
 import { parseNumberWithK } from "@/libs/common";
+import PlayButton from "@/components/button/play";
 
 function VideoPlayerCover() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -80,8 +81,15 @@ function VideoPlayerCover() {
         <section
           className={clsx(
             "absolute top-0 left-0 p-4 flex flex-col justify-between w-full h-full",
-            isShowVideoCover ? "block" : "hidden"
+            isShowVideoCover ? "opacity-100" : "opacity-0"
           )}
+          onClick={(event) => {
+            setIsShowVideoCover((state: boolean) => !state);
+          }}
+          onDoubleClick={(event) => {
+            setIsShowVideoCover(true);
+            setIsVideoPlaying((state) => !state);
+          }}
         >
           <header className="flex justify-between items-center">
             <div className="flex items-center gap-2">
@@ -93,18 +101,16 @@ function VideoPlayerCover() {
             </div>
           </header>
           <div className="flex justify-center items-center">
-            <span className="rounded-full p-6 inline-flex bg-black/30">
-              {isVideoPlaying ? (
-                <PlayIcon className="h-20 w-20 text-white drop-shadow-lx ml-3" />
-              ) : (
-                <PauseIcon className="h-20 w-20 text-white drop-shadow-lx" />
-              )}
-            </span>
+            <PlayButton
+              className="h-20 w-20 text-white drop-shadow-lx ml-3"
+              playIcon={() => <PlayIcon className="h-20 w-20 text-white" />}
+              pauseIcon={() => <PauseIcon className="h-20 w-20 text-white" />}
+            />
           </div>
           <aside className="absolute right-[10px] bottom-[72px] w-[42px] h-[296px] flex flex-col place-items-center justify-between z-[1100]">
             <IconButton
               Icon={HeartIcon}
-              text={parseNumberWithK(data?.likeCount)}
+              text={parseNumberWithK(data?.likeCount ?? 0)}
             />
             <IconButton Icon={BookmarkIcon} text="찜" />
             <IconButton Icon={ListBulletIcon} text="목록" />
@@ -120,7 +126,10 @@ function VideoPlayerCover() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <IconButton Icon={PlayIcon} />
+              <PlayButton
+                playIcon={() => <PlayIcon className="h-6 w-6 text-white" />}
+                pauseIcon={() => <PauseIcon className="h-6 w-6 text-white" />}
+              />
               <span className="ml-2 text-sm text-gray-300">
                 {videoCurrentTime} / {videoDuration}
               </span>
