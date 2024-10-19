@@ -1,6 +1,15 @@
 "use client";
 
-import { VideoData } from "@/components/shorts/ShortsSwiper";
+import {
+  forwardRef,
+  useEffect,
+  useId,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+
 import { ShakaPlayerController } from "@/libs/ShakaPlayerController";
 import { errorState } from "@/store/error";
 import {
@@ -11,15 +20,6 @@ import {
   videoElementState,
 } from "@/store/video";
 import { VideoPlayInfo } from "@/types/response";
-import {
-  forwardRef,
-  useEffect,
-  useId,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
 
 interface VideoPlayerProps {
   videoInfo?: VideoPlayInfo | null;
@@ -127,7 +127,7 @@ function VideoPlayer({ videoInfo, isActive, plaerId }: VideoPlayerProps) {
         <video
           ref={videoRef}
           // src={videoInfo?.url}
-          className="max-w-[572px] w-full"
+          className="max-w-sm w-full"
           //   controls
           poster={
             "https://content.vigloo.com/media/kr010/p01/s01/e001/thumbnails/3dfd04bd9b6946fa99bf54c28c93d628_thumbnail.0000000.jpg"
