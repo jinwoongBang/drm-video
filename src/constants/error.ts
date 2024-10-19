@@ -1,4 +1,4 @@
-class SpoonError implements Error {
+export class SpoonError implements Error {
   name: string;
   message: string;
 
