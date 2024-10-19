@@ -40,6 +40,7 @@ import IconButton from "@/components/button";
 import Loading, { LoadingSpinner } from "@/components/loading/Loading";
 import PlayButton from "@/components/button/play";
 import ProgressBar from "@/components/VideoPlayer/ProgressBar";
+import { useDoubleTab } from "@/hooks/useDoubleTab";
 
 function VideoPlayerCover({ plaerId }: { plaerId: string }) {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -70,7 +71,7 @@ function VideoPlayerCover({ plaerId }: { plaerId: string }) {
   useEffect(() => {
     if (isShowVideoCover) {
       timerRef.current = setTimeout(() => {
-        //
+        setIsShowVideoCover(false);
       }, 3000);
     } else {
       timerRef.current && clearTimeout(timerRef.current);
@@ -81,6 +82,23 @@ function VideoPlayerCover({ plaerId }: { plaerId: string }) {
     };
   }, [isShowVideoCover]);
 
+  const handleClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsShowVideoCover((state: boolean) => !state);
+  };
+
+  const handleDoubleClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setIsShowVideoCover(true);
+    setIsVideoPlaying((state) => !state);
+  };
+
+  const handleDoubleTab = useDoubleTab({
+    onDoubleTab: () => {
+      setIsVideoPlaying((state) => !state);
+    },
+  });
+
   return (
     <section
       className={clsx(
@@ -88,13 +106,9 @@ function VideoPlayerCover({ plaerId }: { plaerId: string }) {
         "transition-opacity duration-200",
         isShowVideoCover ? "opacity-100" : "opacity-0"
       )}
-      onClick={(event) => {
-        setIsShowVideoCover((state: boolean) => !state);
-      }}
-      onDoubleClick={(event) => {
-        setIsShowVideoCover(true);
-        setIsVideoPlaying((state) => !state);
-      }}
+      onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
+      onTouchStart={handleDoubleTab}
     >
       <header className="flex justify-between items-center">
         <div className="flex items-center gap-2">
