@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import { useSwiperSlide } from "swiper/react";
 
 import VideoPlayerCover from "@/components/VideoPlayer/VideoPlayerCover";
@@ -5,7 +7,6 @@ import CoreVideoPlayer from "@/components/VideoPlayer/CoreVideoPlayer";
 
 import { useVideoQuery } from "@/hooks/useVideoQuery";
 import Loading from "@/components/loading/Loading";
-import { use, useEffect, useId } from "react";
 
 interface VideoPlayerProps {
   programId: number;

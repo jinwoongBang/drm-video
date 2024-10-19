@@ -37,6 +37,7 @@ function ProgramInfoProvider({
         programId: Number(programId),
         episodeIndex: 0,
         seasonIndex: 0,
+        programInfo,
       });
     }
   }, [programId, programInfo]);

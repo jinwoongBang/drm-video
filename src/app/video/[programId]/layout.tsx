@@ -1,4 +1,5 @@
 import ErrorModal from "@/app/video/[programId]/component/ErrorModal";
+import AlertModal from "@/app/video/[programId]/component/AlertModal";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -11,6 +12,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       </div>
 
       <ErrorModal />
+      <AlertModal />
     </>
   );
 }
