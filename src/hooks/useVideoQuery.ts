@@ -33,7 +33,7 @@ export function useVideoQuery(
       },
     },
     {
-      enabled: !!seasonId && !!episodeNumber && !!format,
+      enabled: !!seasonId && !!format,
     }
   );
 }
