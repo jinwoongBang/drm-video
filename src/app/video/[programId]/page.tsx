@@ -9,14 +9,6 @@ interface VideoData {
   videoUrl: string;
 }
 
-const videoData: VideoData[] = [
-  { id: "1", videoUrl: "http://localhost:3000/video/ForBiggerBlazes.mp4" },
-  { id: "2", videoUrl: "http://localhost:3000/video/ForBiggerBlazes.mp4" },
-  { id: "3", videoUrl: "http://localhost:3000/video/ForBiggerBlazes.mp4" },
-  { id: "4", videoUrl: "http://localhost:3000/video/ForBiggerBlazes.mp4" },
-  { id: "5", videoUrl: "http://localhost:3000/video/ForBiggerBlazes.mp4" },
-];
-
 async function Page({ params }: { params: { programId: string } }) {
   const programId = Number(params.programId);
 
