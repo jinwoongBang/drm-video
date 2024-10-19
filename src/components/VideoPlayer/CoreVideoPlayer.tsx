@@ -57,6 +57,10 @@ function VideoPlayer({ videoInfo, isActive }: VideoPlayerProps) {
     };
   }, [videoInfo, isActive]);
 
+  useEffect(() => {
+    isVideoPlaying ? videoRef.current?.play() : videoRef.current?.pause();
+  }, [isVideoPlaying]);
+
   const handleLoadStart = () => {
     console.debug("onLoadStart");
   };
@@ -102,7 +106,7 @@ function VideoPlayer({ videoInfo, isActive }: VideoPlayerProps) {
           }
           loop
           playsInline
-          autoPlay={true}
+          autoPlay={false}
           muted={true}
           onLoadStart={handleLoadStart}
           onLoadedMetadata={handleLoadedMetadata}
