@@ -55,7 +55,7 @@ export class ShakaPlayerController {
       const uri = manifestUri[streamingType];
       await this.player.load(uri);
     } catch (e) {
-      this.onError(e);
+      this.onError(e as shaka.util.Error);
     }
   }
 
@@ -66,11 +66,11 @@ export class ShakaPlayerController {
     }
   }
 
-  private onErrorEvent(event: any): void {
-    this.onError(event.detail);
+  private onErrorEvent(event: shaka.util.Error): void {
+    this.onError(event);
   }
 
-  private onError(error: any): void {
+  private onError(error: shaka.util.Error): void {
     console.error("Error code", error.code, "object", error);
   }
 
