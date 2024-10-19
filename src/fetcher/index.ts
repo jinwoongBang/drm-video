@@ -1,3 +1,8 @@
+import {
+  InternalServerError,
+  NetworkError,
+  UnknownError,
+} from "@/constants/error";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 export interface ApiResponse<T> {
@@ -17,17 +22,9 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     const isAxiosError = axios.isAxiosError(error);
-    const errorResponse: ApiResponse<any> = isAxiosError
-      ? {
-          payload: null,
-          error: error.message || "Unknown error (isAxiosError)",
-          status: error.response?.status || 500,
-        }
-      : {
-          payload: null,
-          error: "Unknown error",
-          status: 500,
-        };
+    const errorResponse = isAxiosError
+      ? new NetworkError(error.message)
+      : new InternalServerError(error.message);
 
     return Promise.reject(errorResponse);
   }
