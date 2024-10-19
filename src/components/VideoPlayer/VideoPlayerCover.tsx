@@ -18,6 +18,8 @@ import {
 import { useProgramQuery } from "@/hooks/useProgramQuery";
 
 import {
+  formattedCurrentTimeSelector,
+  formattedDurationSelector,
   isShowVideoCoverState,
   isVideoLoadingState,
   isVideoPlayingState,
@@ -32,6 +34,7 @@ import {
 
 import IconButton from "@/components/button";
 import Loading from "../loading/Loading";
+import { parseNumberWithK } from "@/libs/common";
 
 function VideoPlayerCover() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -52,8 +55,8 @@ function VideoPlayerCover() {
 
   const videoProgress = useRecoilValue(videoProgressSelector);
 
-  const videoCurrentTime = useRecoilValue(videoCurrentTimeState);
-  const videoDuration = useRecoilValue(videoDurationState);
+  const videoCurrentTime = useRecoilValue(formattedCurrentTimeSelector);
+  const videoDuration = useRecoilValue(formattedDurationSelector);
 
   useEffect(() => {
     if (isShowVideoCover) {
@@ -99,7 +102,10 @@ function VideoPlayerCover() {
             </span>
           </div>
           <aside className="absolute right-[10px] bottom-[72px] w-[42px] h-[296px] flex flex-col place-items-center justify-between z-[1100]">
-            <IconButton Icon={HeartIcon} text={data?.likeCount?.toString()} />
+            <IconButton
+              Icon={HeartIcon}
+              text={parseNumberWithK(data?.likeCount)}
+            />
             <IconButton Icon={BookmarkIcon} text="찜" />
             <IconButton Icon={ListBulletIcon} text="목록" />
             <IconButton Icon={ShareIcon} text="공유" />
