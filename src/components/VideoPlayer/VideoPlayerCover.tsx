@@ -34,9 +34,10 @@ import {
   selectedProgramInfoState,
 } from "@/store/program";
 
-import IconButton from "@/components/button";
-import Loading from "../loading/Loading";
 import { parseNumberWithK } from "@/libs/common";
+
+import IconButton from "@/components/button";
+import Loading, { LoadingSpinner } from "@/components/loading/Loading";
 import PlayButton from "@/components/button/play";
 import ProgressBar from "@/components/VideoPlayer/ProgressBar";
 
@@ -106,7 +107,7 @@ function VideoPlayerCover({ plaerId }: { plaerId: string }) {
       </header>
       <div className="flex justify-center items-center">
         {isVideoLoading ? (
-          <Loading />
+          <LoadingSpinner />
         ) : (
           <PlayButton
             className={clsx(
