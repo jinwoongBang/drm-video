@@ -18,11 +18,11 @@ function VideoPlayer({ programId, seasonId, episodeNumber }: VideoPlayerProps) {
 
   const id = useId();
 
-  const { data: videoInfo, isLoading } = useVideoQuery(
-    seasonId,
-    episodeNumber,
-    "HLS"
-  );
+  const {
+    data: videoInfo,
+    isLoading,
+    isPending,
+  } = useVideoQuery(seasonId, episodeNumber, "HLS");
 
   if (isLoading) return <Loading />;
 

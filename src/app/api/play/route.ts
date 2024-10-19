@@ -5,30 +5,50 @@ import path from "path";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const format = searchParams.get("format");
+
   const episodeNumber = searchParams.get("episodeNumber");
   const seasonId = searchParams.get("seasonId");
 
-  if (!format || !episodeNumber || !seasonId) {
+  if (!episodeNumber || !seasonId) {
     return NextResponse.json(
       { error: "Missing required parameters" },
       { status: 400 }
     );
   }
 
-  if (format !== "HLS" && format !== "DASH") {
-    return NextResponse.json({ error: "Invalid format" }, { status: 400 });
-  }
-
-  const fileName = `${format}-${seasonId}-${episodeNumber}.json`;
-  const filePath = path.join(process.cwd(), "src", "mock", "play", fileName);
+  const hlsFileName = `HLS-${seasonId}-${episodeNumber}.json`;
+  const dashFileName = `DASH-${seasonId}-${episodeNumber}.json`;
+  const hlsFilePath = path.join(
+    process.cwd(),
+    "src",
+    "mock",
+    "play",
+    hlsFileName
+  );
+  const dashFilePath = path.join(
+    process.cwd(),
+    "src",
+    "mock",
+    "play",
+    dashFileName
+  );
 
   try {
-    const fileContents = fs.readFileSync(filePath, "utf8");
-    const jsonData = JSON.parse(fileContents);
-    jsonData.payload.format = format;
+    const hlsFileContents = fs.readFileSync(hlsFilePath, "utf8");
+    const hlsJsonData = JSON.parse(hlsFileContents).payload;
 
-    return NextResponse.json(jsonData);
+    const dashFileContents = fs.readFileSync(dashFilePath, "utf8");
+    const dashJsonData = JSON.parse(dashFileContents).payload;
+
+    return NextResponse.json(
+      {
+        payload: {
+          hls: hlsJsonData,
+          dash: dashJsonData,
+        },
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error reading file:", error);
     return NextResponse.json({ error: "File not found" }, { status: 404 });

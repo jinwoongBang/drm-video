@@ -63,7 +63,6 @@ function VideoPlayerCover({ plaerId }: { plaerId: string }) {
   const [videoProgress, setVideoProgress] = useRecoilState(
     videoProgressSelector
   );
-  const videoDuration = useRecoilValue(videoDurationState);
 
   const formattedCurrentTime = useRecoilValue(formattedCurrentTimeSelector);
   const formattedDuration = useRecoilValue(formattedDurationSelector);

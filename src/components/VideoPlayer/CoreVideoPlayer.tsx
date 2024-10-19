@@ -64,8 +64,10 @@ function VideoPlayer({ videoInfo, isActive, plaerId }: VideoPlayerProps) {
           shakaPlayerControllerRef.current.loadVideo({
             // hls: "",
             // dash: "",
-            hls: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-            dash: "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd",
+            // hls: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+            // dash: "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd",
+            hls: videoInfo?.hls.url || "",
+            dash: videoInfo?.dash.url || "",
           });
         });
     } else {

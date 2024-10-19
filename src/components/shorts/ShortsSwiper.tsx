@@ -66,7 +66,8 @@ const ShortsSwiper: React.FC<ShortsSwiperProps> = ({ programId }) => {
       direction="vertical"
       slidesPerView={1}
       spaceBetween={0}
-      initialSlide={episodeIndex >= 0 ? episodeIndex : 0}
+      initialSlide={0}
+      init={true}
       //   navigation
       //   pagination={{ clickable: true }}
       modules={[Virtual]}
