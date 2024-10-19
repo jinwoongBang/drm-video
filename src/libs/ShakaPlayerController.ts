@@ -2,6 +2,7 @@
 // import shaka from "shaka-player";
 // https://cdn.jsdelivr.net/npm/shaka-player@4.6.2/dist/shaka-player.compiled.min.js
 
+import { ShakaError } from "@/constants/error";
 import DRMController from "@/libs/drm/DRMController";
 
 export class ShakaPlayerController {
@@ -12,6 +13,8 @@ export class ShakaPlayerController {
     "https://license-global.pallycon.com/ri/licenseManager.do";
 
   private drmController: DRMController | null = null;
+
+  private errorEventHandler: (error: ShakaError) => void = () => {};
 
   constructor() {
     this.drmController = new DRMController({ licenseUri: this.licenseUri });
@@ -34,7 +37,7 @@ export class ShakaPlayerController {
     this.player = new shaka.Player(this.video as HTMLMediaElement);
 
     if (this.player) {
-      this.player.addEventListener("error", this.onErrorEvent);
+      this.player.addEventListener("error", this.onError);
       this.drmController?.drm?.registerFilter(this.player);
       this.player.configure(this.drmController?.drm?.config as object);
     }
@@ -55,7 +58,7 @@ export class ShakaPlayerController {
       const uri = manifestUri[streamingType];
       await this.player.load(uri);
     } catch (e) {
-      this.onError(e as shaka.util.Error);
+      this.errorEventHandler(e as shaka.util.Error);
     }
   }
 
@@ -66,12 +69,14 @@ export class ShakaPlayerController {
     }
   }
 
-  private onErrorEvent(event: shaka.util.Error): void {
-    this.onError(event);
+  public setErrorEventHandler(handler: (error: ShakaError) => void): void {
+    this.errorEventHandler = (error: any) => {
+      handler(new ShakaError(error));
+    };
   }
 
-  private onError(error: shaka.util.Error): void {
-    console.error("Error code", error.code, "object", error);
+  public onError(error: any): void {
+    this.errorEventHandler(error);
   }
 
   private async loadShakaPlayerScript(): Promise<void> {
