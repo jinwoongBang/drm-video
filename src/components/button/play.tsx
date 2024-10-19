@@ -30,7 +30,7 @@ function PlayButton({
       className={clsx(className, "flex justify-center items-center")}
       onClick={handleClick}
     >
-      {isVideoPlaying ? playIcon() : pauseIcon()}
+      {!isVideoPlaying ? playIcon() : pauseIcon()}
     </button>
   );
 }
