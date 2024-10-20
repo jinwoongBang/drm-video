@@ -24,9 +24,9 @@ yarn dev
 src
 ├── app
 │   ├── api
-│   │   ├── play (단일 영상 조회 API)
-│   │   ├── program (프로그램 조회 API)
-│   │   └── videos (영상 리스트 API)
+│   │   ├── play (단일 영상 조회 Mock API)
+│   │   ├── program (프로그램 조회 Mock API)
+│   │   └── videos (영상 리스트 Mock API)
 │   ├── layout.tsx
 │   ├── page.tsx
 │   └── video
@@ -34,7 +34,8 @@ src
 │       │   ├── component (페이지 내에서만 사용하는 컴포넌트)
 │       │   │   ├── AlertModal.tsx
 │       │   │   ├── ErrorModal.tsx
-│       │   │   └── ProgramInfoProvider.tsx
+│       │   │   └── ProgramInfoProvider.tsx (비디오 플레이어 초기화 전 데이터 세팅 컴포넌트)
+│       │   │   └── ShortsSwiper.tsx
 │       │   ├── error.tsx
 │       │   ├── layout.tsx
 │       │   └── page.tsx (쇼츠 영상 페이지)
@@ -52,10 +53,8 @@ src
 │   │   └── Loading.tsx
 │   ├── modal
 │   │   └── index.tsx
-│   ├── portal
-│   │   └── index.tsx
-│   └── shorts
-│       └── ShortsSwiper.tsx
+│   └── portal
+│       └── index.tsx
 ├── constants (공통 상수)
 │   └── error.ts
 ├── context (Provider & Context 컴포넌트)
