@@ -1,7 +1,39 @@
-## 지원자 소개
-- 이름 : 방진웅
-- 지원 분야 : 프론트엔드
-- 이메일 : jwbang.dev@gmail.com
+## 프로젝트 소개
+- DRM 튜토리얼을 위해 쇼츠형 드라마 서비스인 Vigloo 클론 코딩
+- https://www.vigloo.com
+
+## 사용 라이브러리
+
+```json
+{
+    "@heroicons/react": "^2.1.5", // UI 아이콘
+    "@tanstack/react-query": "^5.59.15", // React Query (API 비동기 호출 라이브러리)
+    "axios": "^1.7.7", // API 호출 라이브러리 (fetch 대신 사용하였습니다.)
+    "clsx": "^2.1.1", // UI Class 스타일 조합
+    "next": "14.2.15", // Next.js (app router 사용)
+    "recoil": "^0.7.7", // Recoil (상태 관리)
+    "shaka-player": "^4.11.7", // Shaka Player (Streaming & DRM 라이브러리)
+    "swiper": "^11.1.14" //  상하 스크롤(Swiper)을 위해 사용하였습니다.
+}
+```
+
+## DRM 설명
+
+- 현재 구현된 DRM은 Widevine, PlayReady, FairPlay 3가지 입니다.
+- 각 DRM은 shaka-player 라이브러리를 통해 구현되었습니다.
+- DRM 모듈의 폴더 구조는 아래와 같습니다.
+
+```bash
+./src/libs/drm
+  ├── DRM.ts (DRM 인터페이스)
+  ├── DRMController.ts (DRM 컨트롤러)
+  ├── FairPlayDRM.ts (FairPlay DRM 모델링)
+  ├── PlayReadyDRM.ts (PlayReady DRM 모델링)
+  └── WidevineDRM.ts (Widevine DRM 모델링)
+```
+
+- 동작 워크플로우는 다음과 같습니다.
+  - 플레이어 생성 -> DRM 컨트롤러 생성 및 설정 초기화 -> DRM 타입 결정 -> 타입에 맞는 DRM 모델 객체 생성 -> 플레이어에 DRM Config 설정 -> 플레이어 재생
 
 ## 프로젝트 실행
 
@@ -101,36 +133,5 @@ src
     ├── shaka-player.d.ts (Shaka Player 타입)
     └── response.ts (API 응답 타입)
 ```
-## 사용 라이브러리
 
-```json
-{
-    "@heroicons/react": "^2.1.5", // UI 아이콘
-    "@tanstack/react-query": "^5.59.15", // React Query (API 비동기 호출 라이브러리)
-    "axios": "^1.7.7", // API 호출 라이브러리 (fetch 대신 사용하였습니다.)
-    "clsx": "^2.1.1", // UI Class 스타일 조합
-    "next": "14.2.15", // Next.js (app router 사용)
-    "recoil": "^0.7.7", // Recoil (상태 관리)
-    "shaka-player": "^4.11.7", // Shaka Player (Streaming & DRM 라이브러리)
-    "swiper": "^11.1.14" //  상하 스크롤(Swiper)을 위해 사용하였습니다.
-}
-```
-
-## DRM 설명
-
-- 현재 구현된 DRM은 Widevine, PlayReady, FairPlay 3가지 입니다.
-- 각 DRM은 shaka-player 라이브러리를 통해 구현되었습니다.
-- DRM 모듈의 폴더 구조는 아래와 같습니다.
-
-```bash
-./src/libs/drm
-  ├── DRM.ts (DRM 인터페이스)
-  ├── DRMController.ts (DRM 컨트롤러)
-  ├── FairPlayDRM.ts (FairPlay DRM 모델링)
-  ├── PlayReadyDRM.ts (PlayReady DRM 모델링)
-  └── WidevineDRM.ts (Widevine DRM 모델링)
-```
-
-- 동작 워크플로우는 다음과 같습니다.
-  - 플레이어 생성 -> DRM 컨트롤러 생성 및 설정 초기화 -> DRM 타입 결정 -> 타입에 맞는 DRM 모델 객체 생성 -> 플레이어에 DRM Config 설정 -> 플레이어 재생
 
